@@ -140,7 +140,7 @@ create_partition_scheme() {
   LVM=0
   print_title "https://wiki.archlinux.org/index.php/Partitioning"
   print_info "La partición de un disco duro permite dividir logicamente el espacio disponible en secciones a las que se puede acceder de forma independiente."
-  print_warning "Mantener actual no funciona con LUKS"
+  print_warning "Maintain Current no funciona con LUKS"
   partition_layouts=("Default" "LVM" "LVM+LUKS" "Maintain Current")
   PS3="$prompt1"
   echo -e "Seleccionar esquema de particion:"
@@ -338,7 +338,7 @@ format_partitions() {
   create_swap() {
     swap_options=("partition" "file" "skip")
     PS3="$prompt1"
-    echo -e "Selecciona ${BYellow}${partition_name[i]}${Reset} sistema de archivos:\n"
+    echo -e "Selecciona el sistema de archivos ${BYellow}${partition_name[i]}${Reset}:\n"
     select OPT in "${swap_options[@]}"; do
       case "$REPLY" in
       1)
@@ -522,7 +522,7 @@ configure_keymap() {
 #CONFIGURE FSTAB {{{
 configure_fstab() {
   print_title "FSTAB - https://wiki.archlinux.org/index.php/Fstab"
-  print_info "El archivo contiene información fija del sistema de archivos /etc/fstab . Define como los dispositivos de almacenamiento y las particiones deben montarse e integrarse en el sistema general. El comando mount lo lee para determinar qué opciones usar al montar una particion o particion específica."
+  print_info "El archivo contiene información fija del sistema de archivos /etc/fstab. Define como los dispositivos de almacenamiento y las particiones deben montarse e integrarse en el sistema general. El comando mount lo lee para determinar qué opciones usar al montar una particion o particion específica."
   if [[ ! -f ${MOUNTPOINT}/etc/fstab.aui ]]; then
     cp "${MOUNTPOINT}"/etc/fstab "${MOUNTPOINT}"/etc/fstab.aui
   else
