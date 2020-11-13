@@ -241,6 +241,8 @@ select_user(){
                   git clone https://github.com/helmuthdu/vim /home/"${username}"/.vim
                   ln -sf /home/"${username}"/.vim/vimrc /home/"${username}"/.vimrc
                   cp -R vim /home/"${username}"/.vim/fonts /home/"${username}"/.fonts
+                  mkdir /home/"${username}"/.vim/colors
+                  curl -fsSL -o /home/"${username}"/.vim/colors/tender.vim https://raw.githubusercontent.com/jacoborus/tender.vim/master/colors/tender.vim 
                   GRUVBOX_NEEDED=1
                   ;;
                 3)
@@ -773,7 +775,7 @@ install_video_cards(){
     if [ "$(lspci | grep 'VMware SVGA' -c)" -gt "0" ]; then
       package_install "xf86-video-vmware"
     fi
-    if [ "$(ls /boot | grep hardened -c)" -gt "0" ] || [ "$(ls /boot | grep lts -c)" -gt "0" ]; then
+    if [ "$(ls /boot | grep hardened -c)" -gt "0" ] || [ "$(ls /boot | grep lts -c)" -gt "0" ] || [ "$(ls /boot | grep zen -c)" -gt "0" ]; then
       package_install "virtualbox-guest-dkms virtualbox-guest-utils mesa-libgl"
     else
       package_install "virtualbox-guest-modules-arch virtualbox-guest-utils mesa-libgl"
@@ -786,7 +788,7 @@ install_video_cards(){
   #VMware {{{
   elif [[ ${VIDEO_DRIVER} == vmware ]]; then
     package_install "xf86-video-vmware xf86-input-vmmouse"
-    if [ "$(ls /boot | grep hardened -c)" -gt "0" ] || [ "$(ls /boot | grep lts -c)" -gt "0" ]; then
+    if [ "$(ls /boot | grep hardened -c)" -gt "0" ] || [ "$(ls /boot | grep lts -c)" -gt "0" ] || [ "$(ls /boot | grep zen -c)" -gt "0" ]; then
       aur_package_install "open-vm-tools-dkms"
     else
       package_install "open-vm-tools"
@@ -795,22 +797,32 @@ install_video_cards(){
     system_ctl enable vmtoolsd
     create_ramdisk_environment
   #}}}
-  #Bumblebee {{{
-  elif [[ ${VIDEO_DRIVER} == bumblebee ]]; then
+  #Optimus {{{
+  elif [[ ${VIDEO_DRIVER} == optimus ]]; then
     XF86_DRIVERS=$(pacman -Qe | grep xf86-video | awk '{print $1}')
     [[ -n $XF86_DRIVERS ]] && pacman -Rcsn "$XF86_DRIVERS"
-    pacman -S --needed xf86-video-intel bumblebee nvidia
-    [[ ${ARCHI} == x86_64 ]] && pacman -S --needed lib32-virtualgl lib32-nvidia-utils
-    replace_line '*options nouveau modeset=1' '#options nouveau modeset=1' /etc/modprobe.d/modprobe.conf
-    replace_line '*MODULES="nouveau"' '#MODULES="nouveau"' /etc/mkinitcpio.conf
-    create_ramdisk_environment
-    add_user_to_group "${username}" bumblebee
+    read_input_text "Use NVIDIA PRIME Render Offload instead of Bumblebee?" "$BUMBLEBEE"
+    if [[ $OPTION == y ]]; then
+      package_install "nvidia nvidia-utils libglvnd nvidia-prime"
+      package_install "mesa mesa-libgl libvdpau-va-gl"
+      [[ ${ARCHI} == x86_64 ]] && pacman -S --needed lib32-virtualgl lib32-nvidia-utils
+      replace_line '*options nouveau modeset=1' '#options nouveau modeset=1' /etc/modprobe.d/modprobe.conf
+      replace_line '*MODULES="nouveau"' '#MODULES="nouveau"' /etc/mkinitcpio.conf
+      create_ramdisk_environment
+    else
+      pacman -S --needed xf86-video-intel bumblebee nvidia
+      [[ ${ARCHI} == x86_64 ]] && pacman -S --needed lib32-virtualgl lib32-nvidia-utils
+      replace_line '*options nouveau modeset=1' '#options nouveau modeset=1' /etc/modprobe.d/modprobe.conf
+      replace_line '*MODULES="nouveau"' '#MODULES="nouveau"' /etc/mkinitcpio.conf
+      create_ramdisk_environment
+      add_user_to_group "${username}" bumblebee
+    fi
   #}}}
   #NVIDIA {{{
   elif [[ ${VIDEO_DRIVER} == nvidia ]]; then
     XF86_DRIVERS=$(pacman -Qe | grep xf86-video | awk '{print $1}')
     [[ -n $XF86_DRIVERS ]] && pacman -Rcsn "$XF86_DRIVERS"
-    if [ "$(ls /boot | grep hardened -c)" -gt "0" ] || [ "$(ls /boot | grep lts -c)" -gt "0" ]; then
+    if [ "$(ls /boot | grep hardened -c)" -gt "0" ] || [ "$(ls /boot | grep lts -c)" -gt "0" ] || [ "$(ls /boot | grep zen -c)" -gt "0" ]; then
       package_install "nvidia-dkms nvidia-utils libglvnd"
       echo "Do not forget to make a mkinitcpio every time you updated the nvidia driver!"
     else
@@ -900,6 +912,7 @@ install_additional_firmwares(){
       echo "10) $(menu_item "libmtp") [Android Devices]"
       echo "11) $(menu_item "libraw1394") [IEEE1394 Driver]"
       echo "12) $(menu_item "wd719x-firmware") $AUR"
+      echo "13) $(menu_item "upd72020x-fw") [Renesas USB3.0 Driver] $AUR"
       echo ""
       echo " d) DONE"
       echo ""
@@ -943,6 +956,9 @@ install_additional_firmwares(){
             ;;
           12)
             aur_package_install "wd719x-firmware"
+            ;;
+          13)
+            aur_package_install "upd72020x-fw"
             ;;
           "d")
             break
@@ -1283,7 +1299,7 @@ install_desktop_environment(){
       print_info "Cinnamon is a fork of GNOME Shell, initially developed by Linux Mint. It attempts to provide a more traditional user environment based on the desktop metaphor, like GNOME 2. Cinnamon uses Muffin, a fork of the GNOME 3 window manager Mutter, as its window manager."
       package_install "cinnamon nemo-fileroller nemo-preview"
       # Cinnamon does not include the following: a screenshot utility, editor, terminal... Hence installing some default choices explicitly.
-      package_install "gnome-screenshot gedit gnome-terminal gnome-control-center gnome-system-monitor gnome-schedule gnome-power-manager"
+      package_install "gnome-screenshot gedit gnome-terminal gnome-control-center gnome-system-monitor gnome-power-manager"
       # Suggested by https://bbs.archlinux.org/viewtopic.php?id=185123
       aur_package_install "mintlocale"
       # config xinitrc
@@ -1647,7 +1663,6 @@ install_desktop_environment(){
       ;;
       #}}}
     "b")
-      break
       ;;
     *)
       invalid_option
