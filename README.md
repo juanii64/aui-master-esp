@@ -24,13 +24,13 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 
 ## Obtención del repositorio
 ### Con git
-- Aumentar la partición del espacio para el cowspace: `mount -o remount, size = 2G /run/archiso/cowspace`
+- Aumentar la partición del espacio para el cowspace: `mount -o remount,size=2G /run/archiso/cowspace`
 - Obtener la lista de paquetes e instalar git: `pacman -Sy git`
 - Obtener el script: `git clone https://github.com/juanii64/aui-master-esp`
 
 ### Sin git
-- Aumentar la partición del espacio para el cowspace: `mount -o remount, size = 2G /run/archiso /cowspace`
-- Obtenga el script: `wget https://github.com/juanii64/aui-master-esp/tarball/master -O - | tar.xz`
+- Aumentar la partición del espacio para el cowspace: `mount -o remount,size=2G /run/archiso /cowspace`
+- Obtenga el script: `wget https://github.com/juanii64/aui-master-esp/tarball/master -O - | tar xz`
 
 
 ## Cómo utilizar
