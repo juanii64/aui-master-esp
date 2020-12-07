@@ -34,8 +34,8 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 
 
 ## Cómo utilizar
-- FIFO [Base del sistema]: `cd aui; ./fifo`
-- LILO [El resto]: `cd aui; ./lilo`
+- FIFO [Base del sistema]: `cd aui-master-esp; ./fifo`
+- LILO [El resto]: `cd aui-master-esp; ./lilo`
 
 ## Caracteristicas
 ### GUIÓN FIFO
