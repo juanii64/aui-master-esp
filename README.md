@@ -15,7 +15,7 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 </p>
 
 ## Nota
-* Primero puedes probarlo en una `VirtualMachine`
+* Primero puedes probarlo en una `MaquinaVirtual`
 
 ## Requisitos previos
 
@@ -24,20 +24,18 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 
 ## Obtención del repositorio
 ### Con git
-- Aumentar la partición del espacio para las vacas: `mount -o remount, size = 2G / run / archiso / cowspace`
+- Aumentar la partición del espacio para las vacas: `mount -o remount, size = 2G /run/archiso/cowspace`
 - Obtener la lista de paquetes e instalar git: `pacman -Sy git`
-- Obtener el script: `git clone git: // github.com / helmuthdu / aui`
+- Obtener el script: `git clone https://github.com/juanii64/aui-master-esp`
 
 ### Sin git
-- Aumentar la partición del espacio para las vacas: `mount -o remount, size = 2G / run / archiso / cowspace`
-- Obtenga el script: `wget https://github.com/helmuthdu/aui/tarball/master -O - | alquitrán xz`
-    - una URL alternativa (para escribir menos (github shorten)) es `wget https://git.io/vS1GH -O - | alquitrán xz`
-    - una URL alternativa (para escribir menos) es `wget http://bit.ly/NoUPC6 -O - | alquitrán xz`
-    - super corto `wget ow.ly/wnFgh -O aui.zip`
+- Aumentar la partición del espacio para las vacas: `mount -o remount, size = 2G /run/archiso /cowspace`
+- Obtenga el script: `wget https://github.com/juanii64/aui-master-esp/tarball/master -O - | alquitrán xz`
+
 
 ## Cómo utilizar
-- FIFO [Base del sistema]: `cd aui; . / Fifo`
-- LILO [El resto]: `cd aui; . / lilo`
+- FIFO [Base del sistema]: `cd aui; ./fifo`
+- LILO [El resto]: `cd aui; ./lilo`
 
 ## Caracteristicas
 ### GUIÓN FIFO
@@ -87,7 +85,7 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 
 
 ## Gracias helmuthdu
-Si le gusta mi trabajo, considere una pequeña donación de Paypal en helmuthdu@gmail.com :)
+Basado en el script: https://github.com/helmuthdu/aui
 
 ## Licencia: scroll:
 Este proyecto tiene la licencia GNU General Public License V3. Para obtener más información, consulte el archivo `LICENSE` o visite https://www.gnu.org/licenses/gpl-3.0.en.html.

@@ -3,27 +3,26 @@
 #shellcheck disable=SC1001,SC1091,SC2001,SC2010,SC2015,SC2034,SC2104,SC2154
 #shellcheck disable=SC2154,SC2153,SC2155,SC2165,SC2167,SC2181,SC2207
 
-: 'ATTENTION!:
---------------------------------------------------
-|  Created by helmuthdu <helmuthdu@gmail.com>    |
-|  Contributed by flexiondotorg                  |
-|  Shellchecked by uniminin <uniminin@zoho.com>  |
---------------------------------------------------
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+: '¡ATENCIÓN!:
+--------------------------------------------------------------
+| Creado por helmuthdu <helmuthdu@gmail.com>                 |
+| Modificado y Traducido por Juanii64 <juanii64@outlook.com> |
+| Shell comprobado por uniminin <uniminin@zoho.com>          |
+--------------------------------------------------------------
+Este programa es software gratuito: puedes redistribuirlo y / o modificarlo
+bajo los términos de la Licencia Pública General GNU publicada por
+la Free Software Foundation, ya sea la versión 3 de la Licencia, o
+(a su elección) cualquier versión posterior.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Este programa se distribuye con la esperanza de que sea útil,
+pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de
+COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO PARTICULAR. Ver el
+Licencia pública general GNU para obtener más detalles.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------
-Run this script after your first boot with archlinux (as root)
-'
+Debería haber recibido una copia de la Licencia Pública General GNU
+junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/>.
+-------------------------------------------------- ----------------------
+Ejecute este script después de su primer arranque con archlinux (como root)'
 
 if [[ -f $(pwd)/sharedfuncs ]]; then
   source sharedfuncs
@@ -36,16 +35,16 @@ fi
 #WELCOME {{{
 welcome(){
   clear
-  echo -e "${Bold}Welcome to the Archlinux U Install script by helmuthdu${White}"
+  echo -e "${Bold}Welcome to the Archlinux installation script${White}"
   print_line
-  echo "Requirements:"
-  echo "-> Archlinux installation"
-  echo "-> Run script as root user"
-  echo "-> Working internet connection"
+  echo "Requisitos:"
+  echo "-> Instalación de Archlinux"
+  echo "-> Ejecutar script como usuario root"
+  echo "-> Conexión a Internet"
   print_line
-  echo "Script can be cancelled at any time with CTRL+C"
+  echo "El script se puede cancelar en cualquier momento con CTRL + C"
   print_line
-  echo "http://www.github.com/helmuthdu/aui"
+  echo "https://github.com/juanii64/aui-master-esp"
   print_line
   echo -e "\nBackups:"
   print_line
@@ -106,14 +105,14 @@ language_selector(){
   #}}}
   #}}}
   print_title "LOCALE - https://wiki.archlinux.org/index.php/Locale"
-  print_info "Locales are used in Linux to define which language the user uses. As the locales define the character sets being used as well, setting up the correct locale is especially important if the language contains non-ASCII characters."
-  printf "%s" "Default system language: \"$LOCALE\" [Y/n]: " 
+  print_info "Las configuraciones regionales se utilizan en Linux para definir qué idioma usa el usuario. Dado que las configuraciones regionales también definen los conjuntos de caracteres que se utilizan, configurar la configuración regional correcta es especialmente importante si el idioma contiene caracteres que no son ASCII."
+  printf "%s" "Idioma del sistema: \"$LOCALE\" [Y/n]: " 
   read -r OPTION
   case "$OPTION" in
     "n")
       while [[ $OPTION != y ]]; do
         setlocale
-        read_input_text "Confirm locale ($LOCALE)"
+        read_input_text "Confirmar configuración regional ($LOCALE)"
       done
       sed -i '/'"${LOCALE}"'/s/^#//' /etc/locale.gen
       locale-gen
@@ -170,7 +169,7 @@ language_selector(){
 select_user(){
   #CREATE NEW USER {{{
   create_new_user(){
-    printf "%s" "Username: "
+    printf "%s" "Nombre de usuario: "
     read -r username
     username=$(echo "$username" | tr '[:upper:]' '[:lower:]')
     useradd -m -g users -G wheel -s /bin/bash "${username}"
@@ -187,9 +186,9 @@ select_user(){
   configure_user_account(){
     #BASHRC {{{
     print_title "BASHRC - https://wiki.archlinux.org/index.php/Bashrc"
-    bashrc_list=("Get helmuthdu .bashrc from github" "Vanilla .bashrc" "Get personal .bashrc from github");
+    bashrc_list=("Obtener helmuthdu .bashrc de github "" Vanilla .bashrc "" Obtener .bashrc personal de github");
     PS3="$prompt1"
-    echo -e "Choose your .bashrc\n"
+    echo -e "Elija su .bashrc\n"
     select OPT in "${bashrc_list[@]}"; do
       case "$REPLY" in
         1)
@@ -205,9 +204,9 @@ select_user(){
           ;;
         3)
           package_install "git"
-          printf "%s" "Enter your github username [ex: helmuthdu]: " 
+          printf "%s" "Ingresa tu nombre de usuario de github [ej: juanii64]: " 
           read -r GITHUB_USER
-          printf "%s" "Enter your github repository [ex: aui]: "
+          printf "%s" "Ingrese a su repositorio de github [ej: aui-master-esp]: "
           read -r GITHUB_REPO
           git clone https://github.com/"$GITHUB_USER"/"$GITHUB_REPO"
           cp -R "$GITHUB_REPO"/.* /home/"${username}"/
@@ -221,19 +220,19 @@ select_user(){
     done
     #}}}
     #EDITOR {{{
-    print_title "DEFAULT EDITOR"
+    print_title "EDITOR POR DEFECTO"
     editors_list=("emacs" "nano" "vi" "vim" "neovim" "zile");
     PS3="$prompt1"
-    echo -e "Select editor\n"
+    echo -e "Seleccionar editor\n"
     select EDITOR in "${editors_list[@]}"; do
       if contains_element "$EDITOR" "${editors_list[@]}"; then
         if [[ $EDITOR == vim || $EDITOR == neovim ]]; then
           [[ $EDITOR == vim ]] && (! is_package_installed "gvim" && package_install "vim ctags") || package_install "neovim python2-neovim python-neovim xclip"
           #VIMRC {{{
           if [[ ! -f /home/${username}/.vimrc ]]; then
-            vimrc_list=("Get helmuthdu .vimrc from github" "Vanilla .vimrc" "Get personal .vimrc from github");
+            vimrc_list=("Obtener helmuthdu .vimrc de github "" Vanilla .vimrc "" Obtener .vimrc personal de github");
             PS3="$prompt1"
-            echo -e "Choose your .vimrc\n"
+            echo -e "Elija su .vimrc\n"
             select OPT in "${vimrc_list[@]}"; do
               case "$REPLY" in
                 1)
@@ -247,9 +246,9 @@ select_user(){
                   ;;
                 3)
                   package_install "git"
-                  printf "%s" "Enter your github username [ex: helmuthdu]: "
+                  printf "%s" "Ingresa tu nombre de usuario de github [ej: juanii64] "
                   read -r GITHUB_USER
-                  printf "%s" "Enter your github repository [ex: vim]: "
+                  printf "%s" "Ingrese a su repositorio de github [ej: aui-master-esp]: "
                   read -r GITHUB_REPO
                   git clone https://github.com/"$GITHUB_USER"/"$GITHUB_REPO"
                   cp -R "$GITHUB_REPO"/.vim /home/"${username}"/
@@ -327,9 +326,9 @@ select_user(){
   print_title "SELECT/CREATE USER - https://wiki.archlinux.org/index.php/Users_and_Groups"
   users_list=($(grep "/home" /etc/passwd | cut -d: -f1));
   PS3="$prompt1"
-  echo "Avaliable Users:"
+  echo "Usuarios disponibles:"
   if [[ $(( ${#users_list[@]} )) -gt 0 ]]; then
-    print_warning "WARNING: THE SELECTED USER MUST HAVE SUDO PRIVILEGES"
+    print_warning "ADVERTENCIA: EL USUARIO SELECCIONADO DEBE TENER PRIVILEGIOS SUDO"
   else
     echo ""
   fi
@@ -384,11 +383,11 @@ configure_sudo(){
 #AUR HELPER {{{
 choose_aurhelper(){
   print_title "AUR HELPER - https://wiki.archlinux.org/index.php/AUR_Helpers"
-  print_info "AUR Helpers are written to make using the Arch User Repository more comfortable."
-  print_warning "\tNone of these tools are officially supported by Arch devs."
+  print_info "Los AUR Helpers están escritos para facilitar el uso del repositorio de usuarios de Arch."
+  print_warning "\tNinguna de estas herramientas es oficialmente compatible con los desarrolladores de Arch."
   aurhelper=("trizen" "yay" "aurman" "aura" "pikaur")
   PS3="$prompt1"
-  echo -e "Choose your default AUR helper to install\n"
+  echo -e "Elija su ayudante AUR predeterminado para instalar\n"
   select OPT in "${aurhelper[@]}"; do
     case "$REPLY" in
       1)
@@ -475,15 +474,15 @@ choose_aurhelper(){
 #}}}
 #AUTOMODE {{{
 automatic_mode(){
-  print_title "AUTOMODE"
-  print_info "Create a custom install with all options pre-selected.\nUse this option with care."
-  print_danger "\tUse this mode only if you already know all the option.\n\tYou won't be able to select anything later."
-  read_input_text "Enable Automatic Mode"
+  print_title "MODO AUTOMATICO"
+  print_info "Cree una instalacion personalizada con todas las opciones preseleccionadas.\nUsa esta opcion con cuidado."
+  print_danger "\tUtilice este modo solo si ya conoce todas las opciones.\n\tNo podras seleccionar nada mas tarde."
+  read_input_text "Habilitar el modo automatico"
   if [[ $OPTION == y ]]; then
     $EDITOR "${AUI_DIR}"/lilo.automode
     # shellcheck source=/root/aui/lilo.automode
     source "${AUI_DIR}"/lilo.automode
-    echo -e "The installation will start now."
+    echo -e "La instalacion comenzara ahora."
     pause_function
     AUTOMATIC_MODE=1
   fi
@@ -492,21 +491,21 @@ automatic_mode(){
 #CUSTOM REPOSITORIES {{{
 add_custom_repositories(){
   print_title "CUSTOM REPOSITORIES - https://wiki.archlinux.org/index.php/Unofficial_User_Repositories"
-  read_input_text "Add custom repositories" "$CUSTOMREPO"
+  read_input_text "Agregar repositorios personalizados" "$CUSTOMREPO"
   if [[ $OPTION == y ]]; then
     while true
     do
       print_title "CUSTOM REPOSITORIES - https://wiki.archlinux.org/index.php/Unofficial_User_Repositories"
-      echo " 1) \"Add new repository\""
+      echo " 1) \"Agregar nuevo repositorio\""
       echo ""
-      echo " d) DONE"
+      echo " d) Terminado"
       echo ""
       printf "%s" "$prompt1" OPTION
       case $OPTION in
         1)
-          printf "%s" "Repository Name [ex: custom]: "
+          printf "%s" "Nombre del repositorio [ej: blackarch]: "
           read -r repository_name
-          printf "%s" "Repository Address [ex: file:///media/backup/Archlinux]: " 
+          printf "%s" "Direccion del repositorio [ej: file:///media/backup/blackarch]: " 
           read -r repository_addr
           add_repository "${repository_name}" "${repository_addr}" "Never"
           pause_function
@@ -531,24 +530,24 @@ install_basic_setup(){
   package_install "zip unzip unrar p7zip lzop cpio"
   pause_function
   print_title "AVAHI - https://wiki.archlinux.org/index.php/Avahi"
-  print_info "Avahi is a free Zero Configuration Networking (Zeroconf) implementation, including a system for multicast DNS/DNS-SD discovery. It allows programs to publish and discovers services and hosts running on a local network with no specific configuration."
+  print_info "Avahi es una implementacion gratuita de Zero Configuration Networking (Zeroconf), que incluye un sistema para el descubrimiento de multidifusion DNS / DNS-SD. Permite que los programas publiquen y descubran servicios y hosts que se ejecutan en una red local sin una configuracion especifica."
   package_install "avahi nss-mdns"
   is_package_installed "avahi" && system_ctl enable avahi-daemon.service
   pause_function
   print_title "ALSA - https://wiki.archlinux.org/index.php/Alsa"
-  print_info "The Advanced Linux Sound Architecture (ALSA) is a Linux kernel component intended to replace the original Open Sound System (OSSv3) for providing device drivers for sound cards."
+  print_info "La Arquitectura de sonido avanzada de Linux (ALSA) es un componente del kernel de Linux destinado a reemplazar el Sistema de sonido abierto original (OSSv3) para proporcionar controladores de dispositivo para tarjetas de sonido."
   package_install "alsa-utils alsa-plugins"
   pause_function
   print_title "PULSEAUDIO - https://wiki.archlinux.org/index.php/Pulseaudio"
-  print_info "PulseAudio is the default sound server that serves as a proxy to sound applications using existing kernel sound components like ALSA or OSS"
+  print_info "PulseAudio es el servidor de sonido predeterminado que sirve como proxy para aplicaciones de sonido que utilizan componentes de sonido del kernel existentes como ALSA u OSS."
   package_install "pulseaudio pulseaudio-alsa"
   pause_function
   print_title "NTFS/FAT/exFAT/F2FS - https://wiki.archlinux.org/index.php/File_Systems"
-  print_info "A file system (or filesystem) is a means to organize data expected to be retained after a program terminates by providing procedures to store, retrieve and update data, as well as manage the available space on the device(s) which contain it. A file system organizes data in an efficient manner and is tuned to the specific characteristics of the device."
+  print_info "Un sistema de archivos (o sistema de archivos) es un medio para organizar los datos que se espera que se retengan despues de que finalice un programa al proporcionar procedimientos para almacenar, recuperar y actualizar datos, asi como administrar el espacio disponible en los dispositivos que lo contienen. Un sistema de archivos organiza los datos de manera eficiente y se ajusta a las caracteristicas especificas del dispositivo."
   package_install "ntfs-3g dosfstools exfat-utils f2fs-tools fuse fuse-exfat autofs mtpfs"
   pause_function
   print_title "SYSTEMD-TIMESYNCD - https://wiki.archlinux.org/index.php/Systemd-timesyncd"
-  print_info "A file system (or filesystem) is a means to organize data expected to be retained after a program terminates by providing procedures to store, retrieve and update data, as well as manage the available space on the device(s) which contain it. A file system organizes data in an efficient manner and is tuned to the specific characteristics of the device."
+  print_info "Un sistema de archivos (o sistema de archivos) es un medio para organizar los datos que se espera que se retengan despues de que finalice un programa al proporcionar procedimientos para almacenar, recuperar y actualizar datos, asi como administrar el espacio disponible en los dispositivos que lo contienen. Un sistema de archivos organiza los datos de manera eficiente y se ajusta a las caracteristicas especificas del dispositivo."
   timedatectl set-ntp true
   pause_function
 }
@@ -556,8 +555,8 @@ install_basic_setup(){
 #SSH {{{
 install_ssh(){
   print_title "SSH - https://wiki.archlinux.org/index.php/Ssh"
-  print_info "Secure Shell (SSH) is a network protocol that allows data to be exchanged over a secure channel between two computers."
-  read_input_text "Install ssh" "$SSH"
+  print_info "Secure Shell (SSH) es un protocolo de red que permite intercambiar datos a través de un canal seguro entre dos computadoras."
+  read_input_text "Instalar ssh" "$SSH"
   if [[ $OPTION == y ]]; then
     package_install "openssh"
     system_ctl enable sshd
@@ -601,8 +600,8 @@ install_ssh(){
 #NFS {{{
 install_nfs(){
   print_title "NFS - https://wiki.archlinux.org/index.php/Nfs"
-  print_info "NFS allowing a user on a client computer to access files over a network in a manner similar to how local storage is accessed."
-  read_input_text "Install nfs" "$NFS"
+  print_info "NFS que permite a un usuario en una computadora cliente acceder a archivos a traves de una red de una manera similar a como se accede al almacenamiento local."
+  read_input_text "Instalar nfs" "$NFS"
   if [[ $OPTION == y ]]; then
     package_install "nfs-utils"
     system_ctl enable rpcbind
@@ -615,8 +614,8 @@ install_nfs(){
 #ZSH {{{
 install_zsh(){
   print_title "ZSH - https://wiki.archlinux.org/index.php/Zsh"
-  print_info "Zsh is a powerful shell that operates as both an interactive shell and as a scripting language interpreter. "
-  read_input_text "Install zsh" "$ZSH"
+  print_info "Zsh es un potente shell que funciona como shell interactivo y como intérprete del lenguaje de secuencias de comandos. "
+  read_input_text "Instalar zsh" "$ZSH"
   if [[ $OPTION == y ]]; then
     package_install "zsh"
     read_input_text "Install oh-my-zsh" "$OH_MY_ZSH"
@@ -640,8 +639,8 @@ install_zsh(){
 #FISH {{{
 install_fish(){
   print_title "fish - https://wiki.archlinux.org/index.php/fish"
-  print_info "fish is a friendly interactive shell and a commandline shell intended to be interactive and user-friendly. "
-  read_input_text "Install fish" "$FISH"
+  print_info "fish es un shell interactivo amigable y un shell de linea de comandos disenado para ser interactivo y facil de usar. "
+  read_input_text "Instalar fish" "$FISH"
   if [[ $OPTION == y ]]; then
     package_install "fish"
     read_input_text "Install oh-my-fish" "$OH_MY_FISH"
@@ -655,8 +654,8 @@ install_fish(){
 #SAMBA {{{
 install_samba(){
   print_title "SAMBA - https://wiki.archlinux.org/index.php/Samba"
-  print_info "Samba is a re-implementation of the SMB/CIFS networking protocol, it facilitates file and printer sharing among Linux and Windows systems as an alternative to NFS."
-  read_input_text "Install Samba" "$SAMBA"
+  print_info "Samba es una reimplementaciin del protocolo de red SMB/CIFS, facilita el intercambio de archivos e impresoras entre sistemas Linux y Windows como alternativa a NFS."
+  read_input_text "Instalar Samba" "$SAMBA"
   if [[ $OPTION == y ]]; then
     package_install "wget samba smbnetfs"
     [[ ! -f /etc/samba/smb.conf ]] && wget -q -O /etc/samba/smb.conf "https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD"
@@ -675,7 +674,7 @@ install_samba(){
       sed -i '/user_allow_other/s/^#//' /etc/fuse.conf
       modprobe fuse
     fi
-    echo "Enter your new samba account password:"
+    echo "Ingrese su nueva contrasena de cuenta de samba:"
     pdbedit -a -u "${username}"
     while [[ $? -ne 0 ]]; do
       pdbedit -a -u "${username}"
@@ -690,8 +689,8 @@ install_samba(){
 #READAHEAD {{{
 enable_readahead(){
   print_title "Readahead - https://wiki.archlinux.org/index.php/Improve_Boot_Performance"
-  print_info "Systemd comes with its own readahead implementation, this should in principle improve boot time. However, depending on your kernel version and the type of your hard drive, your mileage may vary (i.e. it might be slower)."
-  read_input_text "Enable Readahead" "$READAHEAD"
+  print_info "Systemd viene con su propia implementacion de lectura anticipada, esto en principio deberia mejorar el tiempo de arranque. Sin embargo, dependiendo de la version de su kernel y el tipo de su disco duro, su kilometraje puede variar (es decir, puede ser mas lento)."
+  read_input_text "Habilitar Readahead" "$READAHEAD"
   if [[ $OPTION == y ]]; then
     system_ctl enable systemd-readahead-collect
     system_ctl enable systemd-readahead-replay
@@ -702,8 +701,8 @@ enable_readahead(){
 #ZRAM {{{
 install_zram (){
   print_title "ZRAM - https://wiki.archlinux.org/index.php/Maximizing_Performance"
-  print_info "Zram creates a device in RAM and compresses it. If you use for swap means that part of the RAM can hold much more information but uses more CPU. Still, it is much quicker than swapping to a hard drive. If a system often falls back to swap, this could improve responsiveness. Zram is in mainline staging (therefore its not stable yet, use with caution)."
-  read_input_text "Install Zram" "$ZRAM"
+  print_info "Zram crea un dispositivo en RAM y lo comprime. Si lo usa para intercambio, significa que parte de la RAM puede contener mucha mas informacion pero usa mas CPU. Aun asi, es mucho mas rapido que cambiar a un disco duro. Si un sistema a menudo recurre al intercambio, esto podria mejorar la capacidad de respuesta. Zram esta en fase de prueba principal (por lo tanto, aun no es estable, utilicelo con precaucion)."
+  read_input_text "Instalar Zram" "$ZRAM"
   if [[ $OPTION == y ]]; then
     aur_package_install "zramswap"
     system_ctl enable zramswap
@@ -714,8 +713,8 @@ install_zram (){
 #TLP {{{
 install_tlp(){
   print_title "TLP - https://wiki.archlinux.org/index.php/Tlp"
-  print_info "TLP is an advanced power management tool for Linux. It is a pure command line tool with automated background tasks and does not contain a GUI."
-  read_input_text "Install TLP" "$TLP"
+  print_info "TLP es una herramienta avanzada de administracion de energía para Linux. Es una herramienta de linea de comandos pura con tareas automatizadas en segundo plano y no contiene una GUI."
+  read_input_text "Instalar TLP" "$TLP"
   if [[ $OPTION == y ]]; then
     package_install "tlp"
     system_ctl enable tlp.service
@@ -730,8 +729,8 @@ install_tlp(){
 #XORG {{{
 install_xorg(){
   print_title "XORG - https://wiki.archlinux.org/index.php/Xorg"
-  print_info "Xorg is the public, open-source implementation of the X window system version 11."
-  echo "Installing X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)"
+  print_info "Xorg es la implementacion publica de codigo abierto de la version 11 del sistema de ventanas X."
+  echo "Instalando X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)"
   package_install "xorg-server xorg-apps xorg-xinit xorg-xkill xorg-xinput xf86-input-libinput"
   package_install "mesa"
   modprobe uinput
@@ -741,7 +740,7 @@ install_xorg(){
 #WAYLAND {{{
 install_wayland(){
   print_title "WAYLAND - https://wiki.archlinux.org/index.php/Wayland"
-  print_info "Wayland is a protocol for a compositing window manager to talk to its clients, as well as a library implementing the protocol. "
+  print_info "Wayland es un protocolo para que un administrador de ventanas de composicion hable con sus clientes, asi como una biblioteca que implementa el protocolo. "
   package_install "weston xorg-server-xwayland"
   pause_function
 }
@@ -749,7 +748,7 @@ install_wayland(){
 #FONT CONFIGURATION {{{
 font_config(){
   print_title "FONTS CONFIGURATION - https://wiki.archlinux.org/index.php/Font_Configuration"
-  print_info "Fontconfig is a library designed to provide a list of available fonts to applications, and also for configuration for how fonts get rendered."
+  print_info "Fontconfig es una biblioteca disenada para proporcionar una lista de fuentes disponibles para las aplicaciones, y tambien para configurar como se renderizan las fuentes."
   pacman -S --asdeps --needed cairo fontconfig freetype2
   pause_function
 }
@@ -768,7 +767,7 @@ create_ramdisk_environment(){
 }
 install_video_cards(){
   package_install "dmidecode"
-  print_title "VIDEO CARD"
+  print_title "TARJETA DE VIDEO"
   check_vga
   #Virtualbox {{{
   if [[ ${VIDEO_DRIVER} == virtualbox ]]; then
@@ -882,8 +881,8 @@ install_video_cards(){
 #CUPS {{{
 install_cups(){
   print_title "CUPS - https://wiki.archlinux.org/index.php/Cups"
-  print_info "CUPS is the standards-based, open source printing system developed by Apple Inc. for Mac OS X and other UNIX-like operating systems."
-  read_input_text "Install CUPS (aka Common Unix Printing System)" "$CUPS"
+  print_info "CUPS es el sistema de impresion de codigo abierto basado en estandares desarrollado por Apple Inc. para Mac OS X y otros sistemas operativos similares a UNIX."
+  read_input_text "Instalar CUPS (aka Common Unix Printing System)" "$CUPS"
   if [[ $OPTION == y ]]; then
     package_install "cups cups-pdf"
     package_install "gutenprint ghostscript gsfonts foomatic-db foomatic-db-engine foomatic-db-nonfree foomatic-db-ppds foomatic-db-nonfree-ppds foomatic-db-gutenprint-ppds"
@@ -894,8 +893,8 @@ install_cups(){
 #}}}
 #ADDITIONAL FIRMWARE {{{
 install_additional_firmwares(){
-  print_title "INSTALL ADDITIONAL FIRMWARES"
-  read_input_text "Install additional firmwares [Audio,Bluetooth,Scanner,Wireless]" "$FIRMWARE"
+  print_title "INSTALE FIRMWARES ADICIONALES"
+  read_input_text "Instale firmwares adicionales [Audio, Bluetooth, escsner, WIFI]" "$FIRMWARE"
   if [[ $OPTION == y ]]; then
     while true
     do
@@ -1104,7 +1103,7 @@ install_desktop_environment(){
     while true
     do
       print_title "DISPLAY MANAGER - https://wiki.archlinux.org/index.php/Display_Manager"
-      print_info "A display manager, or login manager, is a graphical interface screen that is displayed at the end of the boot process in place of the default shell."
+      print_info "Un administrador de pantalla, o administrador de inicio de sesion, es una pantalla de interfaz grafica que se muestra al final del proceso de arranque en lugar del shell predeterminado."
       echo " 1) $(menu_item "entrance-git" "Entrance") $AUR"
       echo " 2) $(menu_item "gdm" "GDM")"
       echo " 3) $(menu_item "lightdm" "LightDM")"
@@ -1201,7 +1200,7 @@ install_desktop_environment(){
   install_misc_apps() { #{{{
     while true
     do
-      print_title "$1 ESSENTIAL APPS"
+      print_title "$1 APLICACIONES ESENCIALES"
       echo " 1) $(menu_item "entrance-git gdm lightdm sddm" "Display Manager") $AUR"
       echo " 2) $(menu_item "dmenu")"
       echo " 3) $(menu_item "viewnior")"
@@ -1274,10 +1273,10 @@ install_desktop_environment(){
     done
   } #}}}
 
-  print_title "DESKTOP ENVIRONMENT|WINDOW MANAGER"
-  print_info "A DE provide a complete GUI for a system by bundling together a variety of X clients written using a common widget toolkit and set of libraries.\n\nA window manager is one component of a system's graphical user interface."
+  print_title "ENTORNO DE ESCRITORIO|GESTOR DE VENTANAS"
+  print_info "Un DE proporciona una GUI completa para un sistema al agrupar una variedad de clientes X escritos usando un conjunto de herramientas y un conjunto de bibliotecas de widgets comunes.\n\nUn administrador de ventanas es un componente de la interfaz grafica de usuario de un sistema."
 
-  echo -e "Select your DE or WM:\n"
+  echo -e "Selecciona su DE o WM:\n"
   echo " --- DE ---         --- WM ---"
   echo " 1) Cinnamon        11) Awesome"
   echo " 2) Deepin          12) Fluxbox"
@@ -1296,7 +1295,7 @@ install_desktop_environment(){
     1)
       #CINNAMON {{{
       print_title "CINNAMON - https://wiki.archlinux.org/index.php/Cinnamon"
-      print_info "Cinnamon is a fork of GNOME Shell, initially developed by Linux Mint. It attempts to provide a more traditional user environment based on the desktop metaphor, like GNOME 2. Cinnamon uses Muffin, a fork of the GNOME 3 window manager Mutter, as its window manager."
+      print_info "Cinnamon es una bifurcación de GNOME Shell, inicialmente desarrollada por Linux Mint. Intenta proporcionar un entorno de usuario más tradicional basado en la metafora del escritorio, como GNOME 2. Cinnamon usa Muffin, una bifurcacion del administrador de ventanas de GNOME 3 Mutter, como su administrador de ventanas."
       package_install "cinnamon nemo-fileroller nemo-preview"
       # Cinnamon does not include the following: a screenshot utility, editor, terminal... Hence installing some default choices explicitly.
       package_install "gnome-screenshot gedit gnome-terminal gnome-control-center gnome-system-monitor gnome-power-manager"
@@ -1313,7 +1312,7 @@ install_desktop_environment(){
     2)
       #DEEPIN {{{
       print_title "DEEPIN - https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment"
-      print_info "The desktop interface and apps feature an intuitive and elegant design. Moving around, sharing and searching etc. has become simply a joyful experience."
+      print_info "La interfaz de escritorio y las aplicaciones presentan un diseño intuitivo y elegante. Moverse, compartir, buscar, etc. se ha convertido simplemente en una experiencia alegre."
       package_install "deepin deepin-extra lightdm-gtk-greeter"
       # config xinitrc
       config_xinitrc "startdde"
@@ -1326,7 +1325,7 @@ install_desktop_environment(){
     3)
       #ENLIGHTENMENT {{{
       print_title "ENLIGHTENMENT - http://wiki.archlinux.org/index.php/Enlightenment"
-      print_info "Enlightenment, also known simply as E, is a stacking window manager for the X Window System which can be used alone or in conjunction with a desktop environment such as GNOME or KDE. Enlightenment is often used as a substitute for a full desktop environment."
+      print_info "Enlightenment, También conocido simplemente como E, es un administrador de ventanas apilables para el sistema de ventanas X que se puede usar solo o junto con un entorno de escritorio como GNOME o KDE. Enlightenment se utiliza a menudo como sustituto de un entorno de escritorio completo."
       package_install "enlightenment terminology"
       package_install "leafpad epdfview"
       package_install "lxappearance"
@@ -1340,7 +1339,7 @@ install_desktop_environment(){
     4)
       #GNOME {{{
       print_title "GNOME - https://wiki.archlinux.org/index.php/GNOME"
-      print_info "GNOME is a desktop environment and graphical user interface that runs on top of a computer operating system. It is composed entirely of free and open source software. It is an international project that includes creating software development frameworks, selecting application software for the desktop, and working on the programs that manage application launching, file handling, and window and task management."
+      print_info "GNOME es un entorno de escritorio y una interfaz gráfica de usuario que se ejecuta sobre un sistema operativo de computadora. Está compuesto íntegramente por software gratuito y de codigo abierto. Es un proyecto internacional que incluye la creacion de marcos de desarrollo de software, la seleccion de software de aplicacion para el escritorio y el trabajo en los programas que administran el lanzamiento de aplicaciones, el manejo de archivos y la administracion de ventanas y tareas."
       package_install "gnome gnome-extra gnome-software gnome-initial-setup"
       package_install "deja-dup gedit-plugins gpaste gnome-tweak-tool gnome-power-manager"
       package_install "nautilus-share"
@@ -1358,7 +1357,7 @@ install_desktop_environment(){
     5)
       #KDE {{{
       print_title "KDE - https://wiki.archlinux.org/index.php/KDE"
-      print_info "KDE is an international free software community producing an integrated set of cross-platform applications designed to run on Linux, FreeBSD, Microsoft Windows, Solaris and Mac OS X systems. It is known for its Plasma Desktop, a desktop environment provided as the default working environment on many Linux distributions."
+      print_info "KDE es una comunidad internacional de software libre que produce un conjunto integrado de aplicaciones multiplataforma disenadas para ejecutarse en sistemas Linux, FreeBSD, Microsoft Windows, Solaris y Mac OS X. Es conocido por su Plasma Desktop, un entorno de escritorio proporcionado como entorno de trabajo predeterminado en muchas distribuciones de Linux."
       package_install "plasma kf5 sddm"
       package_install "ark dolphin dolphin-plugins kaccounts-providers kio-extras kdeconnect sshfs quota-tools gwenview kipi-plugins kate kcalc konsole spectacle okular sweeper kwalletmanager packagekit-qt5"
       is_package_installed "cups" && package_install "print-manager"
@@ -1427,7 +1426,7 @@ install_desktop_environment(){
     6)
       #LXQT {{{
       print_title "LXQT - http://wiki.archlinux.org/index.php/lxqt"
-      print_info "LXQt is the Qt port and the upcoming version of LXDE, the Lightweight Desktop Environment. It is the product of the merge between the LXDE-Qt and the Razor-qt projects: A lightweight, modular, blazing-fast and user-friendly desktop environment."
+      print_info "LXQt es el puerto Qt y la próxima version de LXDE, el entorno de escritorio ligero. Es el producto de la fusión entre los proyectos LXDE-Qt y Razor-qt: un entorno de escritorio ligero, modular, ultrarrapido y facil de usar."
       package_install "lxqt openbox breeze-icons"
       package_install "leafpad epdfview"
       mkdir -p /home/"${username}"/.config/lxqt
@@ -1446,7 +1445,7 @@ install_desktop_environment(){
     7)
       #MATE {{{
       print_title "MATE - https://wiki.archlinux.org/index.php/Mate"
-      print_info "The MATE Desktop Environment is a fork of GNOME 2 that aims to provide an attractive and intuitive desktop to Linux users using traditional metaphors."
+      print_info "El entorno de escritorio MATE es una bifurcacion de GNOME 2 que tiene como objetivo proporcionar un escritorio atractivo e intuitivo a los usuarios de Linux utilizando metaforas tradicionales."
       package_install "mate mate-extra"
       # config xinitrc
       config_xinitrc "mate-session"
@@ -1458,7 +1457,7 @@ install_desktop_environment(){
     8)
       #XFCE {{{
       print_title "XFCE - https://wiki.archlinux.org/index.php/Xfce"
-      print_info "Xfce is a free software desktop environment for Unix and Unix-like platforms, such as Linux, Solaris, and BSD. It aims to be fast and lightweight, while still being visually appealing and easy to use."
+      print_info "Xfce es un entorno de escritorio de software gratuito para Unix y plataformas similares a Unix, como Linux, Solaris y BSD. Su objetivo es ser rapido y liviano, sin dejar de ser visualmente atractivo y facil de usar."
       package_install "xfce4 xfce4-goodies xarchiver mupdf"
       # config xinitrc
       config_xinitrc "startxfce4"
@@ -1470,7 +1469,7 @@ install_desktop_environment(){
     9)
       #BUDGIE {{{
       print_title "BUDGIE - https://wiki.archlinux.org/index.php/Budgie_Desktop"
-      print_info "Budgie is the default desktop of Solus Operating System, written from scratch. Besides a more modern design, Budgie can emulate the look and feel of the GNOME 2 desktop."
+      print_info "Budgie es el escritorio predeterminado del sistema operativo Solus, escrito desde cero. Ademas de un diseño mas moderno, Budgie puede emular la apariencia del escritorio GNOME 2."
       package_install "gnome gnome-extra gnome-software gnome-initial-setup telepathy"
       package_install "deja-dup gedit-plugins gpaste gnome-tweak-tool gnome-power-manager"
       package_install "budgie-desktop"
@@ -1489,7 +1488,7 @@ install_desktop_environment(){
     10)
       #UKUI {{{
       print_title "UKUI - https://wiki.archlinux.org/index.php/UKUI"
-      print_info "UKUI is a lightweight Linux desktop environment, developed based on GTK and Qt. UKUI is the default desktop environment for Ubuntu kylin."
+      print_info "UKUI es un entorno de escritorio Linux ligero, desarrollado en base a GTK y Qt. UKUI es el entorno de escritorio predeterminado para Ubuntu kylin."
       package_install "ukui xorg-server"
       # config xinitrc
       config_xinitrc "ukui-session"
@@ -1501,7 +1500,7 @@ install_desktop_environment(){
     11)
       #AWESOME {{{
       print_title "AWESOME - http://wiki.archlinux.org/index.php/Awesome"
-      print_info "awesome is a highly configurable, next generation framework window manager for X. It is very fast, extensible and licensed under the GNU GPLv2 license."
+      print_info "awesome es un administrador de ventanas de marco de proxima generación altamente configurable para X. Es muy rapido, extensible y tiene licencia GNU GPLv2."
       package_install "awesome"
       package_install "lxappearance"
       package_install "leafpad epdfview nitrogen"
@@ -1520,7 +1519,7 @@ install_desktop_environment(){
     12)
       #FLUXBOX {{{
       print_title "FLUXBOX - http://wiki.archlinux.org/index.php/Fluxbox"
-      print_info "Fluxbox is yet another window manager for X11. It is based on the (now abandoned) Blackbox 0.61.1 code, but with significant enhancements and continued development. Fluxbox is very light on resources and fast, yet provides interesting window management tools such as tabbing and grouping."
+      print_info "Fluxbox es otro administrador de ventanas para X11. Se basa en el codigo (ahora abandonado) Blackbox 0.61.1, pero con mejoras significativas y desarrollo continuo. Fluxbox es muy ligero en recursos y rapido, pero proporciona interesantes herramientas de gestion de ventanas como tabulacion y agrupacion."
       package_install "fluxbox menumaker"
       package_install "lxappearance"
       package_install "leafpad epdfview"
@@ -1534,7 +1533,7 @@ install_desktop_environment(){
     13)
       #I3 {{{
       print_title "i3 - https://wiki.archlinux.org/index.php/I3"
-      print_info "i3 is a dynamic tiling window manager inspired by wmii that is primarily targeted at developers and advanced users. The stated goals for i3 include clear documentation, proper multi-monitor support, a tree structure for windows, and different modes like in vim."
+      print_info "i3 es un administrador de ventanas de mosaico dinámico inspirado en wmii que esta dirigido principalmente a desarrolladores y usuarios avanzados. Los objetivos declarados para i3 incluyen documentacion clara, compatibilidad adecuada con varios monitores, una estructura de arbol para Windows y diferentes modos como en vim."
       package_install "i3-wm"
       package_install "dmenu"
       # config xinitrc
@@ -1547,7 +1546,7 @@ install_desktop_environment(){
     14)
       #I3-Gaps {{{
       print_title "i3 - https://wiki.archlinux.org/index.php/I3"
-      print_info "i3-gaps is a fork of i3wm, a tiling window manager for X11 with more features, such as gaps between windows."
+      print_info "i3-gaps es una bifurcación de i3wm, un administrador de ventanas en mosaico para X11 con mas funciones, como espacios entre ventanas."
       package_install "i3-gaps"
       install_misc_apps "i3"
       install_themes "i3"
@@ -1636,7 +1635,7 @@ install_desktop_environment(){
     15)
       #OPENBOX {{{
       print_title "OPENBOX - http://wiki.archlinux.org/index.php/Openbox"
-      print_info "Openbox is a lightweight and highly configurable window manager with extensive standards support."
+      print_info "Openbox es un administrador de ventanas ligero y altamente configurable con un amplio soporte de estandares."
       package_install "openbox obconf obmenu menumaker"
       package_install "lxappearance"
       package_install "leafpad epdfview nitrogen"
@@ -1653,7 +1652,7 @@ install_desktop_environment(){
     16)
       #XMONAD {{{
       print_title "XMONAD - http://wiki.archlinux.org/index.php/Xmonad"
-      print_info "xmonad is a tiling window manager for X. Windows are arranged automatically to tile the screen without gaps or overlap, maximizing screen use. Window manager features are accessible from the keyboard: a mouse is optional."
+      print_info "xmonad es un administrador de ventanas en mosaico para X. Las ventanas se organizan automaticamente para colocar la pantalla en mosaico sin espacios ni superposicion, maximizando el uso de la pantalla. Las funciones del administrador de ventanas son accesibles desde el teclado: un mouse es opcional."
       package_install "xmonad xmonad-contrib"
       # config xinitrc
       config_xinitrc "xmonad"
@@ -1697,7 +1696,7 @@ install_desktop_environment(){
 #}}}
 #CONNMAN/NETWORKMANAGER/WICD {{{
 install_nm_wicd(){
-  print_title "NETWORK MANAGER"
+  print_title "GESTOR DE RED"
   echo " 1) Networkmanager"
   echo " 2) Wicd"
   echo " 3) ConnMan"
@@ -1708,7 +1707,7 @@ install_nm_wicd(){
   case "$OPTION" in
     1)
       print_title "NETWORKMANAGER - https://wiki.archlinux.org/index.php/Networkmanager"
-      print_info "NetworkManager is a program for providing detection and configuration for systems to automatically connect to network. NetworkManager's functionality can be useful for both wireless and wired networks."
+      print_info "NetworkManager es un programa para proporcionar deteccion y configuracion para que los sistemas se conecten automaticamente a la red. La funcionalidad de NetworkManager puede ser util para redes inalambricas y cableadas."
       package_install "networkmanager dnsmasq networkmanager-openconnect networkmanager-openvpn networkmanager-pptp networkmanager-vpnc"
       if [[ ${KDE} -eq 1 ]]; then
         package_install "plasma-nm"
@@ -1721,7 +1720,7 @@ install_nm_wicd(){
       ;;
     2)
       print_title "WICD - https://wiki.archlinux.org/index.php/Wicd"
-      print_info "Wicd is a network connection manager that can manage wireless and wired interfaces, similar and an alternative to NetworkManager."
+      print_info "Wicd es un administrador de conexion de red que puede administrar interfaces inalambricas y cableadas, similar y una alternativa a NetworkManager."
       if [[ ${KDE} -eq 1 ]]; then
         echo "KDE unsupported. Installing CLI and curses versions only."
         package_install "wicd"
@@ -1734,7 +1733,7 @@ install_nm_wicd(){
       ;;
     3)
       print_title "CONNMAN - https://wiki.archlinux.org/index.php/Connman"
-      print_info "ConnMan is an alternative to NetworkManager and Wicd and was created by Intel and the Moblin project for use with embedded devices."
+      print_info "ConnMan es una alternativa a NetworkManager y Wicd y fue creado por Intel y el proyecto Moblin para su uso con dispositivos integrados."
       package_install "connman"
       # ConnMan daemon
       system_ctl enable connman.service
@@ -1746,8 +1745,8 @@ install_nm_wicd(){
 #USB 3G MODEM {{{
 install_usb_modem(){
   print_title "USB 3G MODEM - https://wiki.archlinux.org/index.php/USB_3G_Modem"
-  print_info "A number of mobile telephone networks around the world offer mobile internet connections over UMTS (or EDGE or GSM) using a portable USB modem device."
-  read_input_text "Install usb 3G modem support" "$USBMODEM"
+  print_info "Varias redes de telefonía movil en todo el mundo ofrecen conexiones de Internet movil a traves de UMTS (o EDGE o GSM) utilizando un dispositivo de modem USB portatil."
+  read_input_text "Instalar soporte de modem USB 3G" "$USBMODEM"
   if [[ $OPTION == y ]]; then
     package_install "usbutils usb_modeswitch"
     if is_package_installed "networkmanager"; then
@@ -1764,7 +1763,7 @@ install_usb_modem(){
 #BLUETOOTH {{{
 install_bluetooth(){
   print_title "BLUETOOTH - https://wiki.archlinux.org/index.php/Bluetooth"
-  print_info "Bluetooth is a standard for the short-range wireless interconnection of cellular phones, computers, and other electronic devices. In Linux, the canonical implementation of the Bluetooth protocol stack is BlueZ"
+  print_info "Bluetooth es un estándar para la interconexion inalambrica de corto alcance de telefonos celulares, computadoras y otros dispositivos electrónicos. En Linux, la implementacion canónica de la pila de protocolos Bluetooth es BlueZ"
   read_input_text "Install bluetooth support" "$BLUETOOTH"
   if [[ $OPTION == y ]]; then
     package_install "bluez bluez-utils"
@@ -1777,7 +1776,7 @@ install_bluetooth(){
 install_accessories_apps(){
   while true
   do
-    print_title "ACCESSORIES APPS"
+    print_title "APLICACIONES DE ACCESORIOS"
     echo " 1) $(menu_item "albert")"
     echo " 2) $(menu_item "catfish")"
     echo " 3) $(menu_item "conky-lua") $AUR"
@@ -1851,7 +1850,7 @@ install_accessories_apps(){
 install_development_apps(){
   while true
   do
-    print_title "DEVELOPMENT APPS"
+    print_title "APLICACIONES DE DESARROLLO"
     echo " 1) $(menu_item "atom" "Atom")"
     echo " 2) $(menu_item "emacs")"
     echo " 3) $(menu_item "gvim")"
@@ -1995,7 +1994,7 @@ install_development_apps(){
 install_office_apps(){
   while true
   do
-    print_title "OFFICE APPS"
+    print_title "APLICACIONES DE OFICINA"
     echo " 1) $(menu_item "goffice calligra-libs" "$([[ ${KDE} -eq 1 ]] && echo "Caligra" || echo "Abiword + Gnumeric";)")"
     echo " 2) $(menu_item "calibre")"
     echo " 3) $(menu_item "goldendict")"
@@ -2077,7 +2076,7 @@ install_office_apps(){
 install_system_apps(){
   while true
   do
-    print_title "SYSTEM TOOLS APPS"
+    print_title "APLICACIONES DE HERRAMIENTAS DEL SISTEMA"
     echo " 1) $(menu_item "clamav" "Clamav Antivirus")"
     echo " 2) $(menu_item "cockpit") $AUR"
     echo " 3) $(menu_item "webmin") $AUR"
@@ -2199,7 +2198,7 @@ install_system_apps(){
 install_graphics_apps(){
   while true
   do
-    print_title "GRAPHICS APPS"
+    print_title "APLICACIONES GRAFICAS"
     echo " 1) $(menu_item "blender")"
     echo " 2) $(menu_item "gimp")"
     echo " 3) $(menu_item "gthumb")"
@@ -2271,7 +2270,7 @@ install_graphics_apps(){
 install_internet_apps(){
   while true
   do
-    print_title "INTERNET APPS"
+    print_title "APLICACIONES DE INTERNET"
     echo " 1) Browser"
     echo " 2) Download|Fileshare"
     echo " 3) Email|RSS"
@@ -2652,7 +2651,7 @@ install_internet_apps(){
 install_audio_apps(){
   while true
   do
-    print_title "AUDIO APPS"
+    print_title "APLICACIONES DE AUDIO"
     echo " 1) Players"
     echo " 2) Editors|Tools"
     echo " 3) Codecs"
@@ -2807,7 +2806,7 @@ install_audio_apps(){
 install_video_apps(){
   while true
   do
-    print_title "VIDEO APPS"
+    print_title "APLICACIONES DE VIDEO"
     echo " 1) Players"
     echo " 2) Editors|Tools"
     echo " 3) Codecs"
@@ -2972,7 +2971,7 @@ install_video_apps(){
 install_games(){
   while true
   do
-    print_title "GAMES - https://wiki.archlinux.org/index.php/Games"
+    print_title "JUEGOS - https://wiki.archlinux.org/index.php/Games"
     echo " 1) 0AD"
     echo " 2) PlayOnLinux"
     echo " 3) Steam"
@@ -3270,7 +3269,7 @@ install_fonts(){
 choose_ime_m17n(){
   while true
   do
-    print_title "INTERNATIONALIZATION - https://wiki.archlinux.org/index.php/Internationalization"
+    print_title "INTERNACIONALIZACION - https://wiki.archlinux.org/index.php/Internationalization"
     echo " 1) $(menu_item "fcitx")"
     echo " 2) $(menu_item "ibus")"
     echo ""
@@ -3312,7 +3311,7 @@ choose_ime_m17n(){
 #}}}
 #CLEAN ORPHAN PACKAGES {{{
 clean_orphan_packages(){
-  print_title "CLEAN ORPHAN PACKAGES"
+  print_title "LIMPIAR PAQUETES HUERFANOS"
   pacman -Rsc --noconfirm "$(pacman -Qqdt)"
   #pacman -Sc --noconfirm
   pacman-optimize
@@ -3422,29 +3421,29 @@ if is_package_installed "kdebase-workspace"; then KDE=1; fi
 
 while true
 do
-  print_title "ARCHLINUX INSTALL - https://github.com/helmuthdu/aui"
-  print_warning "USERNAME: ${username}"
-  echo " 1) $(mainmenu_item "${checklist[1]}" "Basic Setup")"
-  echo " 2) $(mainmenu_item "${checklist[2]}" "Desktop Environment|Window Manager")"
-  echo " 3) $(mainmenu_item "${checklist[3]}" "Accessories Apps")"
-  echo " 4) $(mainmenu_item "${checklist[4]}" "Development Apps")"
-  echo " 5) $(mainmenu_item "${checklist[5]}" "Office Apps")"
-  echo " 6) $(mainmenu_item "${checklist[6]}" "System Apps")"
-  echo " 7) $(mainmenu_item "${checklist[7]}" "Graphics Apps")"
-  echo " 8) $(mainmenu_item "${checklist[8]}" "Internet Apps")"
-  echo " 9) $(mainmenu_item "${checklist[9]}" "Audio Apps")"
-  echo "10) $(mainmenu_item "${checklist[10]}" "Video Apps")"
-  echo "11) $(mainmenu_item "${checklist[11]}" "Games")"
-  echo "12) $(mainmenu_item "${checklist[12]}" "Web server")"
+  print_title "ARCHLINUX INSTALL - https://github.com/juanii64/aui-master-esp"
+  print_warning "NOMBRE DE USUARIO: ${username}"
+  echo " 1) $(mainmenu_item "${checklist[1]}" "Configuracion basica")"
+  echo " 2) $(mainmenu_item "${checklist[2]}" "Entorno de escritorio|Administrador de ventanas")"
+  echo " 3) $(mainmenu_item "${checklist[3]}" "Aplicaciones de accesorios")"
+  echo " 4) $(mainmenu_item "${checklist[4]}" "Aplicaciones de desarrollo")"
+  echo " 5) $(mainmenu_item "${checklist[5]}" "Aplicaciones de Office")"
+  echo " 6) $(mainmenu_item "${checklist[6]}" "Aplicaciones del sistema")"
+  echo " 7) $(mainmenu_item "${checklist[7]}" "Aplicaciones de graficos")"
+  echo " 8) $(mainmenu_item "${checklist[8]}" "Aplicaciones de Internet")"
+  echo " 9) $(mainmenu_item "${checklist[9]}" "Aplicaciones de audio")"
+  echo "10) $(mainmenu_item "${checklist[10]}" "Aplicaciones de video")"
+  echo "11) $(mainmenu_item "${checklist[11]}" "Juegos")"
+  echo "12) $(mainmenu_item "${checklist[12]}" "Servidor web")"
   echo "13) $(mainmenu_item "${checklist[13]}" "Fonts")"
-  echo "14) $(mainmenu_item "${checklist[14]}" "Internationalization")"
+  echo "14) $(mainmenu_item "${checklist[14]}" "Internacionalizacion")"
   echo "15) $(mainmenu_item "${checklist[15]}" "Extra")"
-  echo "16) $(mainmenu_item "${checklist[16]}" "Clean Orphan Packages")"
-  echo "17) $(mainmenu_item "${checklist[17]}" "Reconfigure System")"
+  echo "16) $(mainmenu_item "${checklist[16]}" "Limpiar Paquetes Huerfanos")"
+  echo "17) $(mainmenu_item "${checklist[17]}" "Reconfigurar Sistema")"
   echo ""
-  echo " q) Quit"
+  echo " t) Terminado"
   echo ""
-  MAINMENU+=" q"
+  MAINMENU+=" t"
   read_input_options "$MAINMENU"
   for OPT in "${OPTIONS[@]}"; do
     case "$OPT" in
@@ -3542,7 +3541,7 @@ do
         reconfigure_system
         checklist[17]=1
         ;;
-      "q")
+      "t")
         finish
         ;;
       *)
