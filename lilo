@@ -186,23 +186,15 @@ select_user(){
   configure_user_account(){
     #BASHRC {{{
     print_title "BASHRC - https://wiki.archlinux.org/index.php/Bashrc"
-    bashrc_list=("Obtener helmuthdu .bashrc de github " " Vanilla .bashrc " " Obtener .bashrc personal de github");
+    bashrc_list=(" Vanilla .bashrc " " Obtener .bashrc personal de github");
     PS3="$prompt1"
     echo -e "Elija su .bashrc\n"
     select OPT in "${bashrc_list[@]}"; do
       case "$REPLY" in
         1)
-          package_install "git"
-          package_install "colordiff"
-          git clone https://github.com/helmuthdu/dotfiles
-          cp dotfiles/.bashrc dotfiles/.dircolors dotfiles/.dircolors_256 dotfiles/.nanorc dotfiles/.yaourtrc ~/
-          cp dotfiles/.bashrc dotfiles/.dircolors dotfiles/.dircolors_256 dotfiles/.nanorc dotfiles/.yaourtrc /home/"${username}"/
-          rm -fr dotfiles
-          ;;
-        2)
           cp /etc/skel/.bashrc /home/"${username}"
           ;;
-        3)
+        2)
           package_install "git"
           printf "%s" "Ingresa tu nombre de usuario de github [ej: juanii64]: " 
           read -r GITHUB_USER
@@ -475,7 +467,7 @@ choose_aurhelper(){
 #AUTOMODE {{{
 automatic_mode(){
   print_title "MODO AUTOMATICO"
-  print_info "Cree una instalacion personalizada con todas las opciones preseleccionadas.\nUsa esta opcion con cuidado."
+  print_info "Cree una instalacion personalizada por Juanii64 con todas las opciones preseleccionadas.\nUsa esta opcion con cuidado."
   print_danger "\tUtilice este modo solo si ya conoce todas las opciones.\n\tNo podras seleccionar nada mas tarde."
   read_input_text "Habilitar el modo automatico"
   if [[ $OPTION == y ]]; then

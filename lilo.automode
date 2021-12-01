@@ -42,7 +42,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   MAINMENU="1-13"
 #}}}
 #BASIC SETUP {{{
-  CUPS="y"
+  CUPS="n"
   CUSTOMREPO="n"         # Add custom repositories
   FIRMWARE="n"           # Install custom firmwares
   NFS="n"
@@ -51,8 +51,8 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   SSH="n"
   TLP="n"                # Laptop Power Manager
   ZRAM="n"
-  ZSH="n"
-  OH_MY_ZSH="n"
+  ZSH="y"
+  OH_MY_ZSH="y"
   BETTER_VIDEO_DRIVER="y" # NVIDIA/AMDGPU
   BUMBLEBEE="y" # Optimus, use Bumblebee instead of NVIDIA PRIME Render Offload
   FONTCONFIG="y"
@@ -91,7 +91,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   # 14) i3-Gaps
   # 15) OpenBox
   # 16) Xmonad
-  DESKTOPENV="4"
+  DESKTOPENV="7"
   #KDE {{{
     # 1) Choqok
     # 2) Digikam
@@ -100,7 +100,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     # 5) latte-dock
     # 6) Skrooge
     # 7) Yakuake
-    KDE_OPTIONS="1 2 3 6 7"
+    KDE_OPTIONS=""
   #}}}
   #ESSENTIAL APPS [Enlightenment,LXDE,Awesome,Fluxbox,OpenBox] {{{
     #  1) Display Manager
@@ -164,7 +164,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   # 3) ConnMan
   # n) None
   NETWORKMANAGER="1"
-  USBMODEM="y" #USB 3G MODEM SUPPORT
+  USBMODEM="n" #USB 3G MODEM SUPPORT
   BLUETOOTH="y" #BLUETOOTH SUPPORT
 #}}}
 #ACCESSORIES {{{
@@ -179,7 +179,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   #  9) Synapse
   # 10) Terminator
   # 11) Tilix
-  ACCESSORIES_OPTIONS="4 11"
+  ACCESSORIES_OPTIONS="4 7 11"
 #}}}
 #DEVELOPEMENT {{{
   #  1) Atom
@@ -209,7 +209,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   # 25) Postman
   # 26) Gitkraken
   # 27) FreeCad
-  DEVELOPMENT_OPTIONS="18"
+  DEVELOPMENT_OPTIONS=""
 #}}}
 #OFFICE {{{
   #  1) Abiword+Gnumeric|Calligra
@@ -223,7 +223,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   #  9) Tellico
   # 10) Typora
   # 11) Xmind
-  OFFICE_OPTIONS="6"
+  OFFICE_OPTIONS=""
 #}}}
 #SYSTEM TOOLS {{{
   #  1) ClamAV
@@ -244,7 +244,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   # 16) netdata
   # 17) nload
   # 18) vmware-workstation 12
-  SYSTEMTOOLS_OPTIONS="12 14"
+  SYSTEMTOOLS_OPTIONS="9 10 12"
 #}}}
 #GRAPHICS {{{
   #  1) Blender
@@ -259,7 +259,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
   # 10) Shotwell
   # 11) Simple Scan
   # 12) YACReader
-  GRAPHICS_OPTIONS="2 3 4 6 10"
+  GRAPHICS_OPTIONS=""
 #}}}
 #INTERNET {{{
   # 1) Browser
@@ -278,7 +278,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     # 6) Vivaldi
     # 7) Tor-browser
     # 8) Brave
-    BROWSERS_OPTIONS="3"
+    BROWSERS_OPTIONS="1"
   #}}}
   #DOWNLOAD|FILESHARE {{{
     #  1) Deluge
@@ -298,7 +298,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     # 15) Youtube-dl
     # 16) Megasync
     # 17) Extreme Download Manager
-    DOWNLOAD_OPTIONS="13"
+    DOWNLOAD_OPTIONS="7"
   #}}}
   #EMAIL|RSS {{{
     # 1) Liferea
@@ -320,7 +320,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     # 12) Slack
     # 13) VK Messanger
     # 14) Zoom.us
-    IM_OPTIONS="5"
+    IM_OPTIONS=""
   #}}}
   #MAPPING {{{
     # 1) Anydesk
@@ -352,14 +352,14 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     # 10) Spotify
     # 11) Timidity++
     # 12) quodlibet
-    AUDIO_PLAYER_OPTIONS="9"
+    AUDIO_PLAYER_OPTIONS="3"
   #}}}
   #EDITORS|TOOLS {{{
     # 1) Audacity
     # 2) Easytag
     # 3) OcenAudio
     # 4) Soundconverter|Soundkonverter
-    AUDIO_EDITOR_OPTIONS="2"
+    AUDIO_EDITOR_OPTIONS=""
   #}}}
 #}}}
 #VIDEO {{{
@@ -378,7 +378,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     #  8) Popcorn Time
     #  9) VLC
     # 10) Kodi
-    VIDEO_PLAYER_OPTIONS="8"
+    VIDEO_PLAYER_OPTIONS="9"
   #}}}
   #EDITORS|TOOLS {{{
     # 1) Arista
@@ -390,7 +390,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
     # 7) Openshot
     # 8) Pitivi
     # 9) Transmageddon
-    VIDEO_EDITOR_OPTIONS="8"
+    VIDEO_EDITOR_OPTIONS=""
   #}}}
 #}}}
 #GAMES {{{

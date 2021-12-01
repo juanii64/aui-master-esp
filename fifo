@@ -24,6 +24,7 @@ junto con este programa. De lo contrario, consulte <http://www.gnu.org/licenses/
 -------------------------------------------------- ----------------------
 Ejecute este script después de su primer arranque con archlinux (como root)'
 
+
 if [[ -f $(pwd)/sharedfuncs ]]; then
   source sharedfuncs
 else

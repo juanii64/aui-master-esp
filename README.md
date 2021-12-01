@@ -23,14 +23,14 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 - Iniciar sesión como 'root'
 
 ## Obtención del repositorio
-### Con git
+### Obtener con git
 - Aumentar la partición del espacio para el cowspace: `mount -o remount,size=2G /run/archiso/cowspace`
 - Obtener la lista de paquetes e instalar git: `pacman -Sy git`
 - Obtener el script: `git clone https://github.com/juanii64/aui-master-esp`
 
-### Sin git
-- Aumentar la partición del espacio para el cowspace: `mount -o remount,size=2G /run/archiso /cowspace`
-- Obtenga el script: `wget https://github.com/juanii64/aui-master-esp/tarball/master -O - | tar xz`
+
+## Asignar permisos de ejecucion
+- Ex: ~$`chmod +x -R aui-master-esp/`
 
 
 ## Cómo utilizar
@@ -38,7 +38,7 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 - LILO [El resto]: `cd aui-master-esp; ./lilo`
 
 ## Caracteristicas
-### GUIÓN FIFO
+### MENU FIFO
 - Configurar mapa de teclas
 - Seleccionar editor
 - Lista de espejos de configuración automática
@@ -55,7 +55,7 @@ Este proyecto no se desarrolla activamente pero * aceptará * solicitudes de ext
 - Configurar lista de espejos
 - Configurar contraseña de root
 
-### GUIÓN DE LILO
+### MENU DE LILO
 - Copia de seguridad de todos los archivos modificados
 - Instalar repositorios adicionales
 - Crear y configurar un nuevo usuario
